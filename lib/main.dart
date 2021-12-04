@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
         title: 'LV ToDo',
         home: const Login(),
       routes: {
-          '/login': (context) => const Login(),
-          '/register': (context) => const Register(),
-
+          'login': (context) => const Login(),
+          'register': (context) => const Register(),
+          'todo/show/all': (context) => const Todos(),
       }
     );
   }

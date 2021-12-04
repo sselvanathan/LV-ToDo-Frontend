@@ -39,7 +39,7 @@ class Login extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 20),
                       child: InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, '/register');
+                            Navigator.pushNamed(context, 'register');
                           },
                           child: const Text('Register new User')),
                     ),
