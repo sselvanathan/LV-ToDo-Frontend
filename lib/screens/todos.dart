@@ -1,19 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-class Todo {
-  int id;
-  String name;
-
-  Todo({required this.id, required this.name});
-
-  factory Todo.fromJson(Map<String, dynamic> json) {
-    return Todo(id: json['id'], name: json['name']);
-  }
-}
+import 'package:lvTodo/models/todo_model.dart';
+import 'package:lvTodo/services/api_service.dart';
+import 'package:lvTodo/widgets/todo_edit_widget.dart';
 
 class Todos extends StatefulWidget {
   const Todos({Key? key}) : super(key: key);
@@ -23,40 +11,20 @@ class Todos extends StatefulWidget {
 }
 
 class TodosState extends State<Todos> {
-  late Future<List<Todo>> futureTodos;
-  late Todo selectedTodo;
+  late Future<List<TodoModel>> futureTodos;
+  late TodoModel selectedTodo;
   final _formKey = GlobalKey<FormState>();
   final todoNameController = TextEditingController();
-
-  Future<List<Todo>> fetchTodos() async {
-    String uri = dotenv.env['API_URL_CRUD_TODOS'] ?? 'API_URL not found';
-    http.Response response = await http.get(Uri.parse(uri));
-
-    List todos = jsonDecode(response.body);
-
-    return todos.map((todo) => Todo.fromJson(todo)).toList();
-  }
+  ApiService apiService = ApiService();
 
   Future saveTodo() async {
     final form = _formKey.currentState;
 
-    if(!form!.validate()){
+    if (!form!.validate()) {
       return;
     }
 
-    String? todo = dotenv.env['API_URL_CRUD_TODOS'];
-    String? todoId = selectedTodo.id.toString();
-    String uri = todo! + todoId;
-
-    await http.put(Uri.parse(uri),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-        },
-        body: jsonEncode({
-          'name': todoNameController.text
-        })
-    );
+    apiService.updateTodo(selectedTodo.id.toString(), todoNameController.text);
 
     Navigator.pop(context);
   }
@@ -64,7 +32,7 @@ class TodosState extends State<Todos> {
   @override
   void initState() {
     super.initState();
-    futureTodos = fetchTodos();
+    futureTodos = apiService.fetchTodos();
   }
 
   @override
@@ -73,49 +41,26 @@ class TodosState extends State<Todos> {
         appBar: AppBar(
           title: const Text('ToDo'),
         ),
-        body: FutureBuilder<List<Todo>>(
+        body: FutureBuilder<List<TodoModel>>(
             future: futureTodos,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      Todo todo = snapshot.data![index];
+                      TodoModel todoModel = snapshot.data![index];
                       return ListTile(
-                        title: Text(todo.name),
+                        title: Text(todoModel.name),
                         trailing: IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
-                            selectedTodo = todo;
-                            todoNameController.text = todo.name;
+                            selectedTodo = todoModel;
+                            todoNameController.text = todoModel.name;
                             showModalBottomSheet(
                                 context: context,
+                                isScrollControlled: true,
                                 builder: (context) {
-                                  return Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Form(
-                                        key: _formKey,
-                                        child: Column(
-                                          children: <Widget>[
-                                            TextFormField(
-                                                controller: todoNameController,
-                                                validator: (String? value){
-                                                  if (value!.isEmpty){
-                                                    return 'Enter category name';
-                                                  }
-                                                  return null;
-                                                },
-                                                decoration:
-                                                    const InputDecoration(
-                                                  border: OutlineInputBorder(),
-                                                  labelText: 'Todo name',
-                                                )),
-                                            ElevatedButton(
-                                                onPressed: () => saveTodo(),
-                                                child: const Text('Save'))
-                                          ],
-                                        ),
-                                      ));
+                                  return TodoEditWidget(todoModel);
                                 });
                           },
                         ),
