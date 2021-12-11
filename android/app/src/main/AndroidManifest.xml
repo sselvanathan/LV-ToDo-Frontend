@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sselvanathan.lvTodo">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="LV-ToDo"
         android:icon="@mipmap/ic_launcher">
