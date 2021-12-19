@@ -14,7 +14,8 @@ class TodoEditWidget extends StatefulWidget {
 class _TodoEditState extends State<TodoEditWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final todoNameController = TextEditingController();
-  ApiService apiService = ApiService();
+  TodoService apiService = TodoService();
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -31,10 +32,11 @@ class _TodoEditState extends State<TodoEditWidget> {
           child: Column(
             children: <Widget>[
               TextFormField(
+                  onChanged: (text) => setState(() => errorMessage = ''),
                   controller: todoNameController,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Enter category name';
+                      return 'Enter todo name';
                     }
                     return null;
                   },
@@ -52,7 +54,8 @@ class _TodoEditState extends State<TodoEditWidget> {
                       onPressed: () => Navigator.pop(context),
                       child: const Text('Cancel')),
                 ],
-              )
+              ),
+              Text(errorMessage, style: const TextStyle(color: Colors.red))
             ],
           ),
         ));
@@ -65,8 +68,12 @@ class _TodoEditState extends State<TodoEditWidget> {
       return;
     }
 
-    apiService.updateTodo(widget.todoModel.id, todoNameController.text);
-
-    Navigator.pop(context);
+    apiService.updateTodo(widget.todoModel.id, todoNameController.text)
+    .then((TodoModel todoModel) => Navigator.pop(context))
+    .catchError((exception){
+      setState(() {
+        errorMessage = exception.toString();
+      });
+    });
   }
 }

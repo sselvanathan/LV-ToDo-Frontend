@@ -13,7 +13,7 @@ class Todos extends StatefulWidget {
 class TodosState extends State<Todos> {
   late Future<List<TodoModel>> futureTodos;
   late TodoModel selectedTodo;
-  ApiService apiService = ApiService();
+  TodoService apiService = TodoService();
 
   @override
   void initState() {

@@ -5,8 +5,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:lvTodo/models/todo_model.dart';
 
-class ApiService {
-  ApiService();
+class TodoService {
+  TodoService();
 
   final String? crudTodosUrl = dotenv.env['API_URL_CRUD_TODOS'];
 
@@ -27,6 +27,10 @@ class ApiService {
           HttpHeaders.acceptHeader: 'application/json',
         },
         body: jsonEncode({'name': name}));
+
+    if (response.statusCode != 200) {
+      throw Exception('Error happened on Update');
+    }
 
     return TodoModel.fromJson(jsonDecode(response.body));
   }
