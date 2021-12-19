@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lvTodo/models/todo_model.dart';
-import 'package:lvTodo/services/api_service.dart';
-import 'package:lvTodo/widgets/todo_edit_widget.dart';
+import 'package:lvTodo/services/todo_service.dart';
+import 'package:lvTodo/widgets/todo/todo_edit_widget.dart';
 
 class Todos extends StatefulWidget {
   const Todos({Key? key}) : super(key: key);
