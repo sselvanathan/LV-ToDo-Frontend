@@ -13,21 +13,7 @@ class Todos extends StatefulWidget {
 class TodosState extends State<Todos> {
   late Future<List<TodoModel>> futureTodos;
   late TodoModel selectedTodo;
-  final _formKey = GlobalKey<FormState>();
-  final todoNameController = TextEditingController();
   ApiService apiService = ApiService();
-
-  Future saveTodo() async {
-    final form = _formKey.currentState;
-
-    if (!form!.validate()) {
-      return;
-    }
-
-    apiService.updateTodo(selectedTodo.id.toString(), todoNameController.text);
-
-    Navigator.pop(context);
-  }
 
   @override
   void initState() {
@@ -54,8 +40,6 @@ class TodosState extends State<Todos> {
                         trailing: IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
-                            selectedTodo = todoModel;
-                            todoNameController.text = todoModel.name;
                             showModalBottomSheet(
                                 context: context,
                                 isScrollControlled: true,
