@@ -34,4 +34,15 @@ class TodoService {
 
     return TodoModel.fromJson(jsonDecode(response.body));
   }
+
+  Future<void> deleteTodoModel(todoModelId) async {
+    String uri = crudTodosUrl! + todoModelId.toString();
+
+    http.Response response = await http.delete(Uri.parse(uri),
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Error happened on Delete');
+    }
+  }
 }

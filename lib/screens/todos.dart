@@ -26,20 +26,52 @@ class TodosState extends State<Todos> {
             itemBuilder: (context, index) {
               TodoModel todoModel = todos[index];
               return ListTile(
-                title: Text(todoModel.name),
-                trailing: IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) {
-                          return TodoEditWidget(todoModel, provider.updateTodoModel);
-                        });
-                  },
-                ),
-              );
+                  title: Text(todoModel.name),
+                  trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) {
+                              return TodoEditWidget(todoModel,
+                                  provider.updateTodoModel);
+                            });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) {
+                            return  AlertDialog(
+                              title: const Text('Confirmation'),
+                              content: const Text('Are you sure you want to delete this Todo?'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => deleteTodoModel(provider.deleteTodoModel, todoModel),
+                                    child: const Text('Confirm')
+                                ),
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Cancel')
+                                ),
+                              ],
+                            );
+                          }
+                      ),
+                    ),
+                  ]
+                  ));
             })
     );
+  }
+
+  Future deleteTodoModel(Function callback, TodoModel todoModel) async{
+    await callback(todoModel);
+    Navigator.pop(context);
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:lvTodo/models/todo_model.dart';
 import 'package:lvTodo/services/todo_service.dart';
 
@@ -16,15 +16,29 @@ class TodoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future updateTodoModel(TodoModel todoModel) async{
+  Future updateTodoModel(TodoModel todoModel) async {
     try {
       TodoModel updatedTodo = await todoService.updateTodoModel(todoModel);
-      int index  = todoModels.indexOf(todoModel);
+      int index = todoModels.indexOf(todoModel);
       todoModels[index] = updatedTodo;
 
       notifyListeners();
-    } catch(Exception){
-      print(Exception);
+    } on Exception {
+      if (kDebugMode) {
+        print(Exception);
+      }
+    }
+  }
+
+  Future deleteTodoModel(TodoModel todoModel) async {
+    try {
+      await todoService.deleteTodoModel(todoModel.id);
+      todoModels.remove(todoModel);
+      notifyListeners();
+    } on Exception {
+      if (kDebugMode) {
+        print(Exception);
+      }
     }
   }
 }
