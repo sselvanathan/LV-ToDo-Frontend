@@ -1,10 +1,12 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:lvTodo/providers/TodoProvider.dart';
 import 'package:lvTodo/screens/login.dart';
 import 'package:lvTodo/screens/register.dart';
 import 'package:lvTodo/screens/todos.dart';
+import 'package:provider/provider.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   await dotenv.load();
 
   runApp(const MyApp());
@@ -15,14 +17,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-        title: 'LV ToDo',
-        home: const Login(),
-      routes: {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<TodoProvider>(
+            create: (context) => TodoProvider(),
+          )
+        ],
+        child: MaterialApp(title: 'LV ToDo', home: const Login(), routes: {
           'login': (context) => const Login(),
           'register': (context) => const Register(),
           'todo/show/all': (context) => const Todos(),
-      }
-    );
+        }));
   }
 }

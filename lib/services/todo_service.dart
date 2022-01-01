@@ -18,15 +18,15 @@ class TodoService {
     return todos.map((todo) => TodoModel.fromJson(todo)).toList();
   }
 
-  Future<TodoModel> updateTodo(id, name) async {
-    String uri = crudTodosUrl! + id.toString();
+  Future<TodoModel> updateTodoModel(TodoModel todoModel) async {
+    String uri = crudTodosUrl! + todoModel.id.toString();
 
     http.Response response = await http.put(Uri.parse(uri),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
-        body: jsonEncode({'name': name}));
+        body: jsonEncode({'name': todoModel.name}));
 
     if (response.statusCode != 200) {
       throw Exception('Error happened on Update');

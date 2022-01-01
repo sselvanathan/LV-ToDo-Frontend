@@ -4,8 +4,8 @@ import 'package:lvTodo/services/todo_service.dart';
 
 class TodoEditWidget extends StatefulWidget {
   final TodoModel todoModel;
-
-  const TodoEditWidget(this.todoModel, {Key? key}) : super(key: key);
+  final Function todoCallback;
+  const TodoEditWidget(this.todoModel, this.todoCallback, {Key? key}) : super(key: key);
 
   @override
   _TodoEditState createState() => _TodoEditState();
@@ -67,13 +67,8 @@ class _TodoEditState extends State<TodoEditWidget> {
     if (!form!.validate()) {
       return;
     }
-
-    apiService.updateTodo(widget.todoModel.id, todoNameController.text)
-    .then((TodoModel todoModel) => Navigator.pop(context))
-    .catchError((exception){
-      setState(() {
-        errorMessage = exception.toString();
-      });
-    });
+    widget.todoModel.name = todoNameController.text;
+    await widget.todoCallback(widget.todoModel);
+    Navigator.pop(context);
   }
 }
