@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lvTodo/models/todo_model.dart';
 import 'package:lvTodo/providers/TodoProvider.dart';
+import 'package:lvTodo/widgets/todo/todo_create_widget.dart';
 import 'package:lvTodo/widgets/todo/todo_edit_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -66,7 +67,18 @@ class TodosState extends State<Todos> {
                     ),
                   ]
                   ));
-            })
+            }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) {
+                return TodoCreateWidget(provider.createTodoModel);
+              });
+        },
+          child: const Icon(Icons.add),
+      ),
     );
   }
 

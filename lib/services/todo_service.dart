@@ -18,6 +18,23 @@ class TodoService {
     return todos.map((todo) => TodoModel.fromJson(todo)).toList();
   }
 
+  Future<TodoModel> createTodoModel(String todoName) async {
+    String uri = crudTodosUrl!;
+
+    http.Response response = await http.post(Uri.parse(uri),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+        },
+        body: jsonEncode({'name': todoName}));
+
+    if (response.statusCode != HttpStatus.created) {
+      throw Exception('Error happened on Create');
+    }
+
+    return TodoModel.fromJson(jsonDecode(response.body));
+  }
+
   Future<TodoModel> updateTodoModel(TodoModel todoModel) async {
     String uri = crudTodosUrl! + todoModel.id.toString();
 
@@ -28,7 +45,7 @@ class TodoService {
         },
         body: jsonEncode({'name': todoModel.name}));
 
-    if (response.statusCode != 200) {
+    if (response.statusCode != HttpStatus.ok) {
       throw Exception('Error happened on Update');
     }
 
@@ -41,7 +58,7 @@ class TodoService {
     http.Response response = await http.delete(Uri.parse(uri),
     );
 
-    if (response.statusCode != 204) {
+    if (response.statusCode != HttpStatus.noContent) {
       throw Exception('Error happened on Delete');
     }
   }

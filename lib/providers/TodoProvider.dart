@@ -16,6 +16,19 @@ class TodoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future createTodoModel(String todoName) async {
+    try {
+      TodoModel createdTodo = await todoService.createTodoModel(todoName);
+      todoModels.add(createdTodo);
+
+      notifyListeners();
+    } on Exception {
+      if (kDebugMode) {
+        print(Exception);
+      }
+    }
+  }
+
   Future updateTodoModel(TodoModel todoModel) async {
     try {
       TodoModel updatedTodo = await todoService.updateTodoModel(todoModel);
