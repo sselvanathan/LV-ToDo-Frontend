@@ -7,6 +7,14 @@ class AuthenticationProvider extends ChangeNotifier {
 
   AuthenticationProvider();
 
+  Future<String> login(String email, String password, String deviceName) async {
+      String token = await userService.login(email, password, deviceName);
+      notifyListeners();
+      isAuthenticated = true;
+
+      return token;
+  }
+
   Future<String> register(
       String name,
       String email,
@@ -14,16 +22,16 @@ class AuthenticationProvider extends ChangeNotifier {
       String passwordConfirm,
       String deviceName
       ) async {
-      String token = await userService.register(
-          name,
-          email,
-          password,
-          passwordConfirm,
-          deviceName
-      );
-      notifyListeners();
-      isAuthenticated = true;
+    String token = await userService.register(
+        name,
+        email,
+        password,
+        passwordConfirm,
+        deviceName
+    );
+    notifyListeners();
+    isAuthenticated = true;
 
-      return token;
+    return token;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class TodoCreate extends StatelessWidget {
@@ -34,7 +35,9 @@ class TodoCreate extends StatelessWidget {
                             initialDate: DateTime.now(),
                             lastDate: DateTime(2022));
                         if (date != null) {
-                          print(date);
+                          if (kDebugMode) {
+                            print(date);
+                          }
                         }
                       },
                     ),
