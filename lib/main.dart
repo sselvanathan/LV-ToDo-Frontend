@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:lvTodo/providers/AuthenticationProvider.dart';
-import 'package:lvTodo/providers/TodoProvider.dart';
-import 'package:lvTodo/screens/home.dart';
-import 'package:lvTodo/screens/login.dart';
-import 'package:lvTodo/screens/register.dart';
-import 'package:lvTodo/screens/todos.dart';
+import 'package:lvTodo/providers/authentication_provider.dart';
+import 'package:lvTodo/providers/todo_provider.dart';
+import 'package:lvTodo/screens/home_screen.dart';
+import 'package:lvTodo/screens/login_screen.dart';
+import 'package:lvTodo/screens/register_screen.dart';
+import 'package:lvTodo/screens/todos/todos_show_screen.dart';
 import 'package:provider/provider.dart';
 
 Future main() async {

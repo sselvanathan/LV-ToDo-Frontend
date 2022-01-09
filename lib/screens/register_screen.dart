@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lvTodo/providers/AuthenticationProvider.dart';
+import 'package:lvTodo/providers/authentication_provider.dart';
 import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {

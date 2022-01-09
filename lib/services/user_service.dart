@@ -18,6 +18,7 @@ class UserService {
       String deviceName
       ) async {
     String uri = registerUrl!;
+    print(registerUrl);
 
     http.Response response = await http.post(Uri.parse(uri),
         headers: {
