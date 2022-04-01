@@ -146,8 +146,7 @@ class _RegisterState extends State<Register> {
           nameController.text,
           emailController.text,
           passwordController.text,
-          passwordConfirmController.text,
-          deviceName
+          passwordConfirmController.text
       );
 
       Navigator.pop(context);

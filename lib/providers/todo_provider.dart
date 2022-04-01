@@ -34,7 +34,6 @@ class TodoProvider extends ChangeNotifier {
       TodoModel updatedTodo = await todoService.updateTodoModel(todoModel);
       int index = todoModels.indexOf(todoModel);
       todoModels[index] = updatedTodo;
-
       notifyListeners();
     } on Exception {
       if (kDebugMode) {

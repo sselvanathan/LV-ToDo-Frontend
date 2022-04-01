@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
                 '/': (context) {
                   final authenticationProvider = Provider.of<AuthenticationProvider>(context);
                   if (authenticationProvider.isAuthenticated) {
-                    return const Home();
+                    return const Todos();
                   }
                   return const Login();
                 },

@@ -15,8 +15,8 @@ class Todos extends StatefulWidget {
 class TodosState extends State<Todos> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TodoProvider>(context);
-    List<TodoModel> todos = provider.todoModels;
+    final todoProvider = Provider.of<TodoProvider>(context);
+    List<TodoModel> todos = todoProvider.todoModels;
 
     return Scaffold(
         appBar: AppBar(
@@ -39,7 +39,7 @@ class TodosState extends State<Todos> {
                             isScrollControlled: true,
                             builder: (context) {
                               return TodoEditWidget(todoModel,
-                                  provider.updateTodoModel);
+                                  todoProvider.updateTodoModel);
                             });
                       },
                     ),
@@ -53,7 +53,7 @@ class TodosState extends State<Todos> {
                               content: const Text('Are you sure you want to delete this Todo?'),
                               actions: [
                                 TextButton(
-                                    onPressed: () => deleteTodoModel(provider.deleteTodoModel, todoModel),
+                                    onPressed: () => deleteTodoModel(todoProvider.deleteTodoModel, todoModel),
                                     child: const Text('Confirm')
                                 ),
                                 TextButton(
@@ -74,7 +74,7 @@ class TodosState extends State<Todos> {
               context: context,
               isScrollControlled: true,
               builder: (context) {
-                return TodoCreateWidget(provider.createTodoModel);
+                return TodoCreateWidget(todoProvider.createTodoModel);
               });
         },
           child: const Icon(Icons.add),
