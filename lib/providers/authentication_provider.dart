@@ -34,4 +34,10 @@ class AuthenticationProvider extends ChangeNotifier {
 
     return token;
   }
+
+  Future<void> logOut() async {
+    currentUser.setToken('');
+    isAuthenticated = false;
+    notifyListeners();
+  }
 }
