@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CurrentUser{
+class CurrentUser {
   static final CurrentUser _currentUser = CurrentUser._initialize();
   late String _deviceName;
   late String _token = '';
@@ -11,7 +12,9 @@ class CurrentUser{
   factory CurrentUser(){
     return _currentUser;
   }
+
   CurrentUser._initialize() {
+    getToken();
     initializeDeviceName();
   }
 
@@ -31,19 +34,24 @@ class CurrentUser{
     }
   }
 
-  void _setDeviceName(String deviceName){
+  void _setDeviceName(String deviceName) {
     _deviceName = deviceName;
   }
 
-  String getDeviceName(){
+  String getDeviceName() {
     return _deviceName;
   }
 
-  void setToken(String token){
-    _token = token;
+  Future<void> setToken(String token) async {
+    final preferences = await SharedPreferences.getInstance();
+    preferences.setString('token', token);
   }
 
-  String getToken(){
+  Future<String> getToken() async {
+    if (_token.isEmpty) {
+      final preferences = await SharedPreferences.getInstance();
+      _token = preferences.getString('token') ?? '';
+    }
     return _token;
   }
 }

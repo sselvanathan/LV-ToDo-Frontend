@@ -39,7 +39,7 @@ class Api {
 
   getData(uri) async {
     String getUrl = apiUrl! + uri;
-    var token = CurrentUser().getToken();
+    var token = await CurrentUser().getToken();
 
     return await http.get(
         Uri.parse(getUrl),

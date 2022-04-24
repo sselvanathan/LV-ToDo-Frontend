@@ -7,7 +7,16 @@ class AuthenticationProvider extends ChangeNotifier {
   UserService userService = UserService();
   CurrentUser currentUser = CurrentUser();
 
-  AuthenticationProvider();
+  AuthenticationProvider(){
+    init();
+  }
+
+  Future<void> init() async {
+    var token = currentUser.getToken;
+    if (token.toString().isEmpty) {
+      isAuthenticated = true;
+    }
+  }
 
   Future<void> login(String email, String password) async {
     var deviceName = currentUser.getDeviceName();
